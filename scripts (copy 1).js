@@ -27,42 +27,21 @@ function addHover() {
         sqr.addEventListener('mouseover', () => {
             style = window.getComputedStyle(sqr);
             currentColor = style.getPropertyValue('background-color');
-            const currentRGBsArray = convertColorToArray(currentColor);
-            if (sqr.textContent === '') {
-                const colors = genRandomColor();
-                sqr.style['background-color'] = `rgb(${colors[0]}, ${colors[1]}, ${colors[2]}`;
-                sqr.textContent = `${colors[0]}, ${colors[1]}, ${colors[2]}`;
-                sqr.style['font-size'] = 0;
-            } 
-             else {
-                let colorString = sqr.textContent;
-                const subtrahends = getSubtrahends(colorString);
-                let newRed = currentRGBsArray[0] - subtrahends[0];
-                let newGrn = currentRGBsArray[1] - subtrahends[1];
-                let newBlu = currentRGBsArray[2] - subtrahends[2];
-                console.log(newRed, newGrn, newBlu);
-                sqr.style['background-color'] = `rgb(${newRed}, ${newGrn}, ${newBlu}`;
-            }
+
+            if (currentColor == 'rgb(255, 255, 255)') {
+            const colors = genRandomColor();
+            sqr.style['background-color'] = `rgba(${colors[0]}, ${colors[1]}, ${colors[2]}, 0.1`;
+            } else {
+                alpha = currentColor.slice(-2, -1);
+                console.log(alpha);
+                alpha++;
+                newColor = currentColor.slice(0, -2);
+                newColor = newColor + alpha + ')';
+                console.log(newColor);
+                sqr.style['background-color'] = newColor;
+            };
         });
     });
-}
-
-function convertColorToArray(colorString) {
-    let RGBs = colorString.slice(3);
-    RGBs = RGBs.slice(1, -1);
-    const RGBArray = RGBs.split(',');
-    return RGBArray;
-}
-
-// a subtrahend is the number being subtracted in a 
-// subtraction calculation 
-function getSubtrahends (colorString) {
-    const colors = colorString.split(',');
-    let reduceRedBy = colors[0] * .1;
-    let reduceGrnBy = colors[1] * .1;
-    let reduceBluBy = colors[2] * .1;
-    const subtrahends = [reduceRedBy, reduceGrnBy, reduceBluBy];
-    return subtrahends;
 }
 
 function clearGrid() {
@@ -79,6 +58,21 @@ function genRandomColor() {
     const colors = [red, grn, blu];
     return colors;
 }
+
+/*
+function testColor () {
+    x = 1;
+    while (x) {
+        let colors = genRandomColor();
+        for (i=0; i<3; i++) {
+            if (colors[i] === 255) {
+                console.log(colors);
+                x = 0;
+            };
+        };
+    };
+}
+*/
 
 btn = document.querySelector('button');
 btn.addEventListener('click', () => {
